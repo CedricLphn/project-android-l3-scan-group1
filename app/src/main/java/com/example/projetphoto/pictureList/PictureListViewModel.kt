@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projetphoto.R
 
-private val pictures = listOf(
+private val pictures: List<Picture> = listOf(
     Picture(
         R.drawable.out,
         "2021-06-24",
@@ -68,12 +68,27 @@ private val pictures = listOf(
     )
 )
 
+sealed class PictureListViewModelState(
+    open val errorMessage: String = ""
+) {
+    object Loading : PictureListViewModelState()
+    data class Success(val pictures: List<Picture>) : PictureListViewModelState()
+    data class Failure(override val errorMessage: String) :
+        PictureListViewModelState(errorMessage = errorMessage)
+}
+
 class PictureListViewModel : ViewModel() {
-    private val picturesLiveData = MutableLiveData<List<Picture>>()
-    fun getPicturesLiveData(): LiveData<List<Picture>> = picturesLiveData
+    private val state = MutableLiveData<PictureListViewModelState>()
+
+    fun getState(): LiveData<PictureListViewModelState> = state
 
     fun loadPictures() {
+        state.postValue(PictureListViewModelState.Loading)
+        if (pictures.isNullOrEmpty()) {
+            state.postValue(PictureListViewModelState.Failure("Aucune image dans la liste"))
+        } else {
+            state.postValue(PictureListViewModelState.Success(pictures))
+        }
 
-        picturesLiveData.value = pictures
     }
 }

@@ -2,6 +2,7 @@ package com.example.projetphoto.pictureList
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +20,7 @@ class PictureListActivity : AppCompatActivity() {
         binding = ActivityPictureListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        model.getPicturesLiveData().observe(this, Observer { photos -> updatePhotos(photos!!) })
+        model.getState().observe(this, Observer { state -> updateUi(state!!)})
 
         adapter = PictureAdapter(listOf())
         binding.recyclerView.adapter = adapter
@@ -28,7 +29,30 @@ class PictureListActivity : AppCompatActivity() {
         model.loadPictures()
     }
 
-    private fun updatePhotos(photos: List<Picture>) {
-        adapter.updateDataSet(photos)
+    private fun updateUi(state: PictureListViewModelState) {
+        when (state) {
+            PictureListViewModelState.Loading -> {
+                Toast.makeText(
+                    this@PictureListActivity,
+                    "Chargement des images !",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            is PictureListViewModelState.Failure -> {
+                Toast.makeText(
+                    this@PictureListActivity,
+                    "Liste d'images vide / Erreur lors du chargement des images !",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            is PictureListViewModelState.Success -> {
+                Toast.makeText(
+                    this@PictureListActivity,
+                    "Chargement des images réussi !",
+                    Toast.LENGTH_SHORT
+                ).show()
+                adapter.updateDataSet(state.pictures)
+            }
+        }
     }
 }
