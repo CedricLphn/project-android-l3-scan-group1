@@ -1,4 +1,4 @@
-package com.example.projetphoto
+package com.example.projetphoto.takepictures
 
 import android.Manifest
 import android.content.Intent
@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.projetphoto.R
 import java.io.File
 import java.io.FileOutputStream
 
@@ -25,11 +26,11 @@ private val cameraRequestId  = 1222
 private const val TAG = "MyActivity"
 private val PERMISSION_CODE = 1000;
 
-class MainActivity : AppCompatActivity() {
+class TakePicturesViewModel : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(TAG, "onCreate: debut OnCreate")
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_takepictures)
         cameraBtn = findViewById(R.id.cameraBtn)
         myImage = findViewById(R.id.myImage)
 
@@ -67,7 +68,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun saveImage(finalBitmap: Bitmap, image_name: String) {
-        val root: String = Environment.getExternalStorageDirectory().toString()
+        
+        val root: String = getExternalFilesDir(image_name).toString()
         val myDir = File(root)
         myDir.mkdirs()
         val fname = "Image-$image_name.jpg"
@@ -79,10 +81,11 @@ class MainActivity : AppCompatActivity() {
             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
             out.flush()
             out.close()
+            Log.i(TAG, "saveImage: DONE")
+
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e(TAG, "saveImage: ", e)
         }
-        Log.i(TAG, "saveImage: DONE")
     }
 
 }
