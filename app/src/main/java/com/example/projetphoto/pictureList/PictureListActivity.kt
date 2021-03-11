@@ -45,10 +45,10 @@ class PictureListActivity : AppCompatActivity() {
     }
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data!!)
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == lauchTakePicture) {
             if (resultCode == RESULT_OK) {
-                val result = data.getStringExtra("result")
+                val result = data?.getStringExtra("result")
                 Log.i(TAG, "onActivityResult: $result")
             }
             if (resultCode == RESULT_CANCELED) {
