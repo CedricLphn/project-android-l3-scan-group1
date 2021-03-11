@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
@@ -15,7 +14,11 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.room.Room
 import com.example.projetphoto.R
+import com.example.projetphoto.db.AppDatabase
+import com.example.projetphoto.db.objects.Objects
+import com.example.projetphoto.db.pictures.Pictures
 import java.io.File
 import java.io.FileOutputStream
 
