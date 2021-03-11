@@ -6,7 +6,9 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Pictures(
-    @PrimaryKey val id : Int,
     @ColumnInfo val title : String,
     @ColumnInfo val link : String
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id : Int = 0
+}

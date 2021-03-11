@@ -15,8 +15,9 @@ import com.example.projetphoto.db.pictures.Pictures
 )])
 
 data class Objects(
-    @PrimaryKey val id : Int,
     @ColumnInfo val name : String,
     @ColumnInfo val score : Double,
     @ColumnInfo val photo_id : Int
-)
+) {
+    @PrimaryKey(autoGenerate = true) var id : Int = 0
+}
