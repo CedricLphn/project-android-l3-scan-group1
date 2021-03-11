@@ -32,7 +32,7 @@ class PictureAdapter(private var pictures: List<Pictures>) :
             titleTextView.text = picture.title
             dateTextView.text = "picture.pictureDate"
             pictureImageView.setImageURI(Uri.parse(picture.link))
-            nbObjectTextView.text = "picture.nbObject.toString()"
+            nbObjectTextView.text = picture.count.toString()
         }
     }
 

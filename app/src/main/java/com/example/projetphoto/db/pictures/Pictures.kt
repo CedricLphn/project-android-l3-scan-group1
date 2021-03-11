@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class Pictures(
     @ColumnInfo val title : String,
     @ColumnInfo val link : String,
-    val count : Int? = null
+    @ColumnInfo val count : Int
 ) {
     @PrimaryKey(autoGenerate = true)
     var id : Int = 0
