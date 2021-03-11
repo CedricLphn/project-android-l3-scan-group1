@@ -27,7 +27,6 @@ class ItemDetailsActivity : AppCompatActivity() {
             AppDatabase::class.java, "test1"
         ).allowMainThreadQueries().build()
 
-
         val listObj: List<Objects> = db.objectDao().getObjects(idPhoto)
         val picture: Pictures = db.picturesDao().getPicture(idPhoto)
         binding.pictureDetailImageView.setImageURI(Uri.parse(picture.link))
