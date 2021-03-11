@@ -8,6 +8,6 @@ data class ObjectRoot(
 )
 
 data class ObjectModel (
-    @SerializedName("object") val obj : String,
+    @SerializedName("object") val name : String,
     val confidence : Double
 )

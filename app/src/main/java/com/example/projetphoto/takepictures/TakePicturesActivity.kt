@@ -18,7 +18,7 @@ import java.io.FileOutputStream
 
 
 private val cameraRequestId  = 1222
-private const val TAG = "MyActivity"
+private const val TAG = "TakePicturesActivity"
 private val PERMISSION_CODE = 1000;
 
 class TakePicturesActivity : AppCompatActivity() {
@@ -55,33 +55,40 @@ class TakePicturesActivity : AppCompatActivity() {
                 requestPermissions(permission, PERMISSION_CODE)
                 //Manifest.permission.WRITE_EXTERNAL_STORAGE + Manifest.permission.READ_EXTERNAL_STORAGE
             } else {
-                saveImage(image, "test2")
+                val name = saveImage(image, "test2")
                 val returnIntent = Intent(this, TakePicturesActivity::class.java)
-                returnIntent.putExtra("result", image)
+                returnIntent.putExtra("result", name)
                 setResult(RESULT_OK, returnIntent)
                 finish()
 
             }
         }
     }
-    private fun saveImage(finalBitmap: Bitmap, image_name: String) {
+    private fun saveImage(finalBitmap: Bitmap, image_name: String): String? {
         
         val root: String = getExternalFilesDir(image_name).toString()
         val myDir = File(root)
         myDir.mkdirs()
         val fname = "Image-$image_name.jpg"
         val file = File(myDir, fname)
+
+        val fullpath = "${getExternalFilesDir(image_name)}/${fname}"
+
         if (file.exists()) file.delete()
         try {
             val out = FileOutputStream(file)
             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
             out.flush()
             out.close()
-            Log.i(TAG, "saveImage: DONE")
+            Log.i(TAG, "saveImage: $fullpath")
+
+            return fullpath;
 
         } catch (e: Exception) {
             Log.e(TAG, "saveImage: ", e)
         }
+
+        return null
     }
 
 }
