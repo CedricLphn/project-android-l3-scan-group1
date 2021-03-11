@@ -8,13 +8,18 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.EditText
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.projetphoto.R
 import com.example.projetphoto.databinding.ActivityTakepicturesBinding
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 private val cameraRequestId  = 1222
@@ -36,9 +41,34 @@ class TakePicturesActivity : AppCompatActivity() {
                 cameraRequestId
             )
         binding.cameraBtn.setOnClickListener {
-            val cameraInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(cameraInt, cameraRequestId)
+            textDialog()
+
+           // val cameraInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+           // startActivityForResult(cameraInt, cameraRequestId)
         }
+    }
+    private fun textDialog() {
+            val builder = AlertDialog.Builder(this)
+            val inflater = layoutInflater
+           // val dialogLayout = inflater.inflate(binding.cameraBtn, null)
+           // val editText = dialogLayout.findViewById<EditText>(editText)
+
+            with(builder) {
+                setTitle("Enter title plz")
+                setPositiveButton("OK"){dialog, which ->
+                    val cameraInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    startActivityForResult(cameraInt, cameraRequestId)
+                   // val text  = editText.text.toString()
+                }
+                setNegativeButton("Cancel"){ dialog, which ->
+
+
+                }
+
+                //setView(dialogLayout)
+                show()
+            }
+
     }
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -55,7 +85,10 @@ class TakePicturesActivity : AppCompatActivity() {
                 requestPermissions(permission, PERMISSION_CODE)
                 //Manifest.permission.WRITE_EXTERNAL_STORAGE + Manifest.permission.READ_EXTERNAL_STORAGE
             } else {
-                val name = saveImage(image, "test2")
+                val sdf = SimpleDateFormat("dd/M/yyyy_hh:mm:ss")
+                val currentDate = sdf.format(Date())
+                val name = saveImage(image, "$currentDate")
+                //val name = saveImage(image, "test2")
                 val returnIntent = Intent(this, TakePicturesActivity::class.java)
                 returnIntent.putExtra("result", name)
                 setResult(RESULT_OK, returnIntent)
