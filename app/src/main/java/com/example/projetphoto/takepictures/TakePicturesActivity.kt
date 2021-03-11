@@ -18,6 +18,7 @@ import java.io.FileOutputStream
 
 
 private val cameraRequestId  = 1222
+private const val TAG = "MyActivity"
 private val PERMISSION_CODE = 1000;
 
 class TakePicturesActivity : AppCompatActivity() {
@@ -76,8 +77,10 @@ class TakePicturesActivity : AppCompatActivity() {
             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
             out.flush()
             out.close()
+            Log.i(TAG, "saveImage: DONE")
 
         } catch (e: Exception) {
+            Log.e(TAG, "saveImage: ", e)
         }
     }
 
