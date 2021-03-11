@@ -20,25 +20,16 @@ class ItemDetailsActivity : AppCompatActivity() {
         binding = ActivityItemDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val idPhoto = intent.getStringExtra("idPhoto")
-//        val idPhoto = intent.getIntExtra("idPhoto", -1)
-        val idPhone = 1 //À changer par le getIntExtra quand le lien sera fait
+        val idPhoto = intent.getIntExtra("idPhoto", -1)
 
         val db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "test1"
         ).allowMainThreadQueries().build()
 
-//        val test = Pictures(3, "test", "lol")
-//        val objtest = Objects(3, "Velo", 95.2, 3)
-//        val objtest2 = Objects(2, "Voiture", 87.6, 1)
-//        db.picturesDao().insert(test)
-//        db.objectDao().insert(objtest)
-//        db.objectDao().insert(objtest2)
 
-        val listObj: List<Objects> = db.objectDao().getObjects(idPhone)
-        Log.i("TAG", "listObj: $listObj ")
-        val picture: Pictures = db.picturesDao().getPicture(idPhone)
+        val listObj: List<Objects> = db.objectDao().getObjects(idPhoto)
+        val picture: Pictures = db.picturesDao().getPicture(idPhoto)
         binding.pictureDetailImageView.setImageURI(Uri.parse(picture.link))
         binding.titlePhotoTextView.text = picture.title
         for (i in listObj.indices) {
@@ -47,7 +38,7 @@ class ItemDetailsActivity : AppCompatActivity() {
         }
         for (i in listObj.indices) {
             binding.valueObjectTextView.text =
-                "${binding.valueObjectTextView.text} \n ${listObj[i].score* 100}%"
+                "${binding.valueObjectTextView.text} \n${"%.2f".format(listObj[i].score* 100)}%"
         }
     }
 }

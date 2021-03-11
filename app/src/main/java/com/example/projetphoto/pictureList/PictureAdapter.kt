@@ -26,7 +26,7 @@ class PictureAdapter(private var pictures: List<Pictures>) :
             itemConstraintLayout.setOnClickListener {
                 val context = holder.binding.titleTextView.context
                 val intent = Intent(context, ItemDetailsActivity::class.java)
-                intent.putExtra("idPhoto", picture.title)
+                intent.putExtra("idPhoto", picture.id)
                 context.startActivity(intent)
             }
             titleTextView.text = picture.title
