@@ -1,5 +1,6 @@
 package com.example.projetphoto.itemDetails
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -36,8 +37,9 @@ class ItemDetailsActivity : AppCompatActivity() {
 //        db.objectDao().insert(objtest2)
 
         val listObj: List<Objects> = db.objectDao().getObjects(idPhone)
+        Log.i("TAG", "listObj: $listObj ")
         val picture: Pictures = db.picturesDao().getPicture(idPhone)
-
+        binding.pictureDetailImageView.setImageURI(Uri.parse(picture.link))
         binding.titlePhotoTextView.text = picture.title
         for (i in listObj.indices) {
             binding.nameObjectTextView.text =
