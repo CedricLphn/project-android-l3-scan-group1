@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjetPhoto">
+        <activity android:name=".itemDetails.ItemDetailsActivity"></activity>
         <activity android:name=".pictureList.PictureListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
