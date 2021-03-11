@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">ProjetPhoto</string>
+    <string name="camera">take a picture</string>
+    <string name="app_name">projetphoto</string>
 </resources>
