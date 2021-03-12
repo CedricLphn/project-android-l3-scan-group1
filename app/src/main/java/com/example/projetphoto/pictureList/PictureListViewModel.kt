@@ -87,7 +87,7 @@ sealed class PictureListViewModelState(
     open val errorMessage: String = ""
 ) {
     object Loading : PictureListViewModelState()
-    data class Success(val pictures: List<Pictures>) : PictureListViewModelState()
+    data class Success(val pictures: MutableList<Pictures>) : PictureListViewModelState()
     data class Failure(override val errorMessage: String) :
         PictureListViewModelState(errorMessage = errorMessage)
 }
@@ -125,8 +125,9 @@ class PictureListViewModel : ViewModel() {
                     bdd.picturesDao().getLastId()))
             }
 
+            state.postValue(PictureListViewModelState.Success(bdd.picturesDao().getAll()))
+
         }
-        return state.postValue(PictureListViewModelState.Success(bdd.picturesDao().getAll()))
 
     }
 

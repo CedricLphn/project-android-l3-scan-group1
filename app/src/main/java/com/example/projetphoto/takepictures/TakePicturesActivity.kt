@@ -83,8 +83,8 @@ class TakePicturesActivity : AppCompatActivity() {
             val image = data?.extras?.get("data") as Bitmap
             binding.myImage.setImageBitmap(image)
 
-             val sdf = SimpleDateFormat("dd/M/yyyy_hh:mm:ss")
-                val date = SimpleDateFormat("dd/M/yyyy")
+             val sdf = SimpleDateFormat("dd-M-yyyy_hh-mm-ss")
+                val date = SimpleDateFormat("dd-M-yyyy")
                 val currentDate = sdf.format(Date())
                 val name = saveImage(image, "$currentDate")
                 //val name = saveImage(image, "test2")

@@ -11,7 +11,7 @@ import com.example.projetphoto.databinding.ItemPictureBinding
 import com.example.projetphoto.db.pictures.Pictures
 import com.example.projetphoto.itemDetails.ItemDetailsActivity
 
-class PictureAdapter(private var pictures: List<Pictures>) :
+class PictureAdapter(private var pictures: MutableList<Pictures>) :
     RecyclerView.Adapter<PictureAdapter.ViewHolder>() {
     class ViewHolder(val binding: ItemPictureBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -37,9 +37,18 @@ class PictureAdapter(private var pictures: List<Pictures>) :
         }
     }
 
+    fun removeAt(position: Int): Pictures {
+        val picture = pictures[position]
+        pictures.removeAt(position)
+        Log.i("Picture adapter", "removeAt: suppression ${position}")
+        notifyItemRemoved(position)
+
+        return picture
+    }
+
     override fun getItemCount(): Int = pictures.size
 
-    fun updateDataSet(photos: List<Pictures>) {
+    fun updateDataSet(photos: MutableList<Pictures>) {
         this.pictures = photos
         notifyDataSetChanged()
     }
