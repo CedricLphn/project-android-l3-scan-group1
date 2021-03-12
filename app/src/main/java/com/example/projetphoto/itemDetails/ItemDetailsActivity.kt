@@ -3,9 +3,7 @@ package com.example.projetphoto.itemDetails
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.room.Room
-import com.example.projetphoto.R
 import com.example.projetphoto.databinding.ActivityItemDetailsBinding
 import com.example.projetphoto.db.AppDatabase
 import com.example.projetphoto.db.objects.Objects

@@ -15,73 +15,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 private val TAG = "PictureListViewModel"
-
-/* private val pictures: List<Picture> = listOf(
-    Picture(
-        R.drawable.out,
-        "2021-06-24",
-        "Premier test",
-        4
-    ),
-    Picture(
-        R.drawable.out2,
-        "2020-08-12",
-        "Second test",
-        2
-    ),
-    Picture(
-        R.drawable.out3,
-        "2019-02-05",
-        "Troisième test",
-        3
-    ),
-    Picture(
-        R.drawable.out4,
-        "2019-04-18",
-        "Quatrième test",
-        1
-    ),
-    Picture(
-        R.drawable.out5,
-        "2018-07-28",
-        "Cinquième test",
-        6
-    ),
-    Picture(
-        R.drawable.out,
-        "2021-06-24",
-        "Premier test",
-        4
-    ),
-    Picture(
-        R.drawable.out2,
-        "2020-08-12",
-        "Second test",
-        2
-    ),
-    Picture(
-        R.drawable.out3,
-        "2019-02-05",
-        "Troisième test",
-        3
-    ),
-    Picture(
-        R.drawable.out4,
-        "2019-04-18",
-        "Quatrième test",
-        1
-    ),
-    Picture(
-        R.drawable.out5,
-        "2018-07-28",
-        "Cinquième test",
-        6
-    )
-) */
 
 sealed class PictureListViewModelState(
     open val errorMessage: String = ""
@@ -115,10 +52,10 @@ class PictureListViewModel : ViewModel() {
             val file = File(rootFile)
             val api = sendToApi(file)
 
-            var picture = Pictures(title, date, rootFile!!, api!!.objects!!.size)
+            var picture = Pictures(title, date, rootFile, api!!.objects.size)
             bdd.picturesDao().insert(picture)
 
-            for (item in api!!.objects) {
+            for (item in api.objects) {
                 Log.i(TAG, "onActivityResult: Adding object: ${item.name}")
                 bdd.objectDao().insert(Objects(item.name,
                     item.confidence,
@@ -132,13 +69,12 @@ class PictureListViewModel : ViewModel() {
     }
 
     suspend fun sendToApi(file: File): ObjectRoot? {
-        val fbody = RequestBody.create("image/*".toMediaTypeOrNull(),
-            file);
+        val fbody = file.asRequestBody("image/*".toMediaTypeOrNull())
 
         val api = CognitiveServiceBuilder.buildService(CognitiveEndpoint::class.java)
 
-        var response = api.SendImage(fbody).execute();
-        var callback = response.body();
+        var response = api.SendImage(fbody).execute()
+        var callback = response.body()
 
         return callback
 
