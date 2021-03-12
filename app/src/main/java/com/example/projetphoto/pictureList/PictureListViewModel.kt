@@ -46,8 +46,7 @@ class PictureListViewModel : ViewModel() {
 
     }
 
-    fun insert(rootFile: String, title: String, date: String, context: Context) {
-        var bdd = db_init(context)
+    fun insert(rootFile: String, title: String, date: String, bdd: AppDatabase) {
         CoroutineScope(Dispatchers.IO).launch {
             val file = File(rootFile)
             val api = sendToApi(file)
