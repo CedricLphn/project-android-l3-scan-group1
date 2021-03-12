@@ -26,7 +26,6 @@ import java.util.*
 
 private val cameraRequestId  = 1222
 private const val TAG = "TakePicturesActivity"
-private val PERMISSION_CODE = 1000
 
 class TakePicturesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTakepicturesBinding
@@ -52,7 +51,6 @@ class TakePicturesActivity : AppCompatActivity() {
                 val cameraInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 startActivityForResult(cameraInt, cameraRequestId)
             }else {
-                Log.i(TAG, "onCreate: simulaaaaaaaaate")
                 var resId = R.drawable.simulate
                 var resources = resources
                 // On sait que ca crash ici mais i don't know why :(
@@ -117,7 +115,6 @@ class TakePicturesActivity : AppCompatActivity() {
             val name = saveImage(image, "$currentDate")
             //val name = saveImage(image, "test2")
             sendAndSwitchActivity(name)
-
         }
     }
 

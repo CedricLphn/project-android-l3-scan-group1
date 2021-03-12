@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projetphoto.azure.CognitiveEndpoint
 import com.example.projetphoto.azure.CognitiveServiceBuilder
+import com.example.projetphoto.db.AppDatabase
 import com.example.projetphoto.db.db_init
 import com.example.projetphoto.db.objects.Objects
 import com.example.projetphoto.db.pictures.Pictures
@@ -34,8 +35,7 @@ class PictureListViewModel : ViewModel() {
 
     fun getState(): LiveData<PictureListViewModelState> = state
 
-    fun loadPictures(context: Context) {
-        var bdd = db_init(context)
+    fun loadPictures(bdd : AppDatabase) {
         var pictures = bdd.picturesDao().getAll()
         state.postValue(PictureListViewModelState.Loading)
         if (pictures.isNullOrEmpty()) {
