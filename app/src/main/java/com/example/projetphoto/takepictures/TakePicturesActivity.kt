@@ -84,14 +84,15 @@ class TakePicturesActivity : AppCompatActivity() {
             binding.myImage.setImageBitmap(image)
 
              val sdf = SimpleDateFormat("dd-M-yyyy_hh-mm-ss")
-                val date = SimpleDateFormat("dd-M-yyyy")
+                val date = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+            Log.i(TAG, "date **********: $date")
                 val currentDate = sdf.format(Date())
                 val name = saveImage(image, "$currentDate")
                 //val name = saveImage(image, "test2")
                 val returnIntent = Intent(this, TakePicturesActivity::class.java)
-                returnIntent.putExtra("result", name)
+                returnIntent.putExtra("rootFile", name)
                 returnIntent.putExtra("title", binding.changeEditText.text.toString())
-                returnIntent.putExtra("date", date)
+                returnIntent.putExtra("date", date.format(Date()))
                 setResult(RESULT_OK, returnIntent)
                 finish()
 

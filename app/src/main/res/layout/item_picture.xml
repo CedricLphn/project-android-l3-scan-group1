@@ -10,8 +10,8 @@
         android:id="@+id/pictureImageView"
         android:layout_width="60dp"
         android:layout_height="70dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -36,7 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/titleTextView"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-        tools:text="Date de prise" />
+        tools:text="datePicture" />
 
     <TextView
         android:id="@+id/objectDetectTextView"
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:text="Élément(s) détecté(s):"
+        android:text="Detected object(s) :"
         android:textAllCaps="false"
         android:textColor="?attr/colorPrimary"
         android:textStyle="bold"
