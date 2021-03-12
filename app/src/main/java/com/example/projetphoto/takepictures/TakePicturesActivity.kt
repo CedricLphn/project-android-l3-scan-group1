@@ -26,7 +26,6 @@ import java.util.*
 
 private val cameraRequestId  = 1222
 private const val TAG = "TakePicturesActivity"
-private val PERMISSION_CODE = 1000
 
 class TakePicturesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTakepicturesBinding
@@ -117,7 +116,6 @@ class TakePicturesActivity : AppCompatActivity() {
             val name = saveImage(image, "$currentDate")
             //val name = saveImage(image, "test2")
             sendAndSwitchActivity(name)
-
         }
     }
 

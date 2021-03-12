@@ -56,7 +56,7 @@ class PictureListActivity : AppCompatActivity() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
-        model.loadPictures(applicationContext)
+        model.loadPictures(bdd)
 
         binding.floatingActionButton.setOnClickListener {
 
@@ -75,9 +75,6 @@ class PictureListActivity : AppCompatActivity() {
                 val rootFile = data?.getStringExtra("rootFile")
                 val title = data?.getStringExtra("title")
                 val date = data?.getStringExtra("date")
-                Log.i(TAG, "data rootFile: $rootFile")
-                Log.i(TAG, "data title: $title")
-                Log.i(TAG, "data date: $date")
                 model.insert(rootFile!!, title!!, date!!, applicationContext)
             }
 
@@ -87,7 +84,6 @@ class PictureListActivity : AppCompatActivity() {
             }
         }
     }
-
 
 
     private fun updateUi(state: PictureListViewModelState) {
