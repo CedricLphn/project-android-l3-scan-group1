@@ -78,7 +78,6 @@ class PictureListActivity : AppCompatActivity() {
                 model.insert(rootFile!!, title!!, date!!, bdd)
             }
 
-            //Log.i(TAG, "onActivityResult: $filedata")
             if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result
             }
