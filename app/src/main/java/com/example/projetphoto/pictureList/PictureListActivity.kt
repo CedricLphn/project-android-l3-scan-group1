@@ -94,13 +94,13 @@ class PictureListActivity : AppCompatActivity() {
 
         if (requestCode == lauchTakePicture) {
             if (resultCode == RESULT_OK) {
-                val result = data?.getStringExtra("result")
-                Log.i(TAG, "onActivityResult: $result")
-
-                model.insert(result!!, applicationContext)
-
-
-
+                val rootFile = data?.getStringExtra("rootFile")
+                val title = data?.getStringExtra("title")
+                val date = data?.getStringExtra("date")
+                Log.i(TAG, "data rootFile: $rootFile")
+                Log.i(TAG, "data title: $title")
+                Log.i(TAG, "data date: $date")
+                model.insert(rootFile!!, title!!, date!!, applicationContext)
             }
 
             //Log.i(TAG, "onActivityResult: $filedata")
@@ -117,21 +117,21 @@ class PictureListActivity : AppCompatActivity() {
             PictureListViewModelState.Loading -> {
                 Toast.makeText(
                     this@PictureListActivity,
-                    "Chargement des images !",
+                    "Loading images !",
                     Toast.LENGTH_SHORT
                 ).show()
             }
             is PictureListViewModelState.Failure -> {
                 Toast.makeText(
                     this@PictureListActivity,
-                    "Liste d'images vide / Erreur lors du chargement des images !",
+                    "Empty image list !",
                     Toast.LENGTH_SHORT
                 ).show()
             }
             is PictureListViewModelState.Success -> {
                 Toast.makeText(
                     this@PictureListActivity,
-                    "Chargement des images réussi !",
+                    "Loading of images successful !",
                     Toast.LENGTH_SHORT
                 ).show()
                 adapter.updateDataSet(state.pictures)

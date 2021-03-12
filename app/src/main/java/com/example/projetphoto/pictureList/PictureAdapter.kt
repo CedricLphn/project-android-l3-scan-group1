@@ -31,7 +31,7 @@ class PictureAdapter(private var pictures: MutableList<Pictures>) :
                 context.startActivity(intent)
             }
             titleTextView.text = picture.title
-            dateTextView.text = "picture.pictureDate"
+            dateTextView.text = picture.date
             pictureImageView.setImageURI(Uri.parse(picture.link))
             nbObjectTextView.text = picture.count.toString()
         }

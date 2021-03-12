@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Pictures(
     @ColumnInfo val title : String,
+    @ColumnInfo val date : String,
     @ColumnInfo val link : String,
     @ColumnInfo val count : Int
 ) {

@@ -109,13 +109,13 @@ class PictureListViewModel : ViewModel() {
 
     }
 
-    fun insert(fileName: String, context: Context) {
+    fun insert(rootFile: String, title: String, date: String, context: Context) {
         var bdd = db_init(context)
         CoroutineScope(Dispatchers.IO).launch {
-            val file = File(fileName)
+            val file = File(rootFile)
             val api = sendToApi(file)
 
-            var picture = Pictures("test", fileName!!, api!!.objects!!.size)
+            var picture = Pictures(title, date, rootFile!!, api!!.objects!!.size)
             bdd.picturesDao().insert(picture)
 
             for (item in api!!.objects) {
@@ -143,5 +143,5 @@ class PictureListViewModel : ViewModel() {
         return callback
 
 
-        }
+    }
 }

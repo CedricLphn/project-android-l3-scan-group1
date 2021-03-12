@@ -30,14 +30,20 @@ class ItemDetailsActivity : AppCompatActivity() {
         val listObj: List<Objects> = db.objectDao().getObjects(idPhoto)
         val picture: Pictures = db.picturesDao().getPicture(idPhoto)
         binding.pictureDetailImageView.setImageURI(Uri.parse(picture.link))
-        binding.titlePhotoTextView.text = picture.title
-        for (i in listObj.indices) {
-            binding.nameObjectTextView.text =
-                "${binding.nameObjectTextView.text} \n ${listObj[i].name}"
-        }
-        for (i in listObj.indices) {
-            binding.valueObjectTextView.text =
-                "${binding.valueObjectTextView.text} \n${"%.2f".format(listObj[i].score* 100)}%"
+        binding.titlePictureTextView.text = picture.title
+        binding.datePictureTextView.text = picture.date
+        if (listObj.isEmpty()) {
+            binding.nameObjectTextView.text = "No object detected"
+            binding.valueObjectTextView.text = "None"
+        } else {
+            for (i in listObj.indices) {
+                binding.nameObjectTextView.text =
+                    "${binding.nameObjectTextView.text} \n ${listObj[i].name}"
+            }
+            for (i in listObj.indices) {
+                binding.valueObjectTextView.text =
+                    "${binding.valueObjectTextView.text} \n${"%.2f".format(listObj[i].score * 100)}%"
+            }
         }
     }
 }
