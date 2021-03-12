@@ -23,6 +23,9 @@ private val PERMISSION_CODE = 1000;
 
 class TakePicturesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTakepicturesBinding
+
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTakepicturesBinding.inflate(layoutInflater)
@@ -30,38 +33,35 @@ class TakePicturesActivity : AppCompatActivity() {
 
         if (ContextCompat.checkSelfPermission(
                 applicationContext, Manifest.permission.CAMERA
-            )== PackageManager.PERMISSION_DENIED)
-            ActivityCompat.requestPermissions(
-                this, arrayOf(Manifest.permission.CAMERA),
-                cameraRequestId
-            )
+            ) == PackageManager.PERMISSION_DENIED) {
+            demandPermissions()
+
+        }
         binding.cameraBtn.setOnClickListener {
             val cameraInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(cameraInt, cameraRequestId)
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun demandPermissions() {
+        ActivityCompat.requestPermissions(
+            this, arrayOf(Manifest.permission.CAMERA),
+            cameraRequestId
+        )
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == cameraRequestId){
             val image = data?.extras?.get("data") as Bitmap
             binding.myImage.setImageBitmap(image)
-            if (ContextCompat.checkSelfPermission(applicationContext,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-                requestPermissions(permission, PERMISSION_CODE)
-                //Manifest.permission.WRITE_EXTERNAL_STORAGE + Manifest.permission.READ_EXTERNAL_STORAGE
-            } else {
-                val name = saveImage(image, "test2")
-                val returnIntent = Intent(this, TakePicturesActivity::class.java)
-                returnIntent.putExtra("result", name)
-                setResult(RESULT_OK, returnIntent)
-                finish()
-
-            }
+            val name = saveImage(image, "test2")
+            val returnIntent = Intent(this, TakePicturesActivity::class.java)
+            returnIntent.putExtra("result", name)
+            setResult(RESULT_OK, returnIntent)
+            finish()
         }
     }
     private fun saveImage(finalBitmap: Bitmap, image_name: String): String? {
