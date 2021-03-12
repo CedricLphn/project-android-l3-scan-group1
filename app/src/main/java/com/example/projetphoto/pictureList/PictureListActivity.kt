@@ -20,6 +20,7 @@ import com.example.projetphoto.azure.CognitiveEndpoint
 import com.example.projetphoto.azure.CognitiveServiceBuilder
 import com.example.projetphoto.databinding.ActivityPictureListBinding
 import com.example.projetphoto.db.AppDatabase
+import com.example.projetphoto.db.db_init
 import com.example.projetphoto.db.objects.Objects
 import com.example.projetphoto.db.pictures.Pictures
 import com.example.projetphoto.takepictures.TakePicturesActivity
@@ -53,10 +54,7 @@ class PictureListActivity : AppCompatActivity() {
         binding = ActivityPictureListBinding.inflate(layoutInflater)
 
 
-        bdd = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "test1"
-        ).allowMainThreadQueries().build()
+        bdd = db_init(applicationContext)
 
         setContentView(binding.root)
 
@@ -66,7 +64,7 @@ class PictureListActivity : AppCompatActivity() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
-        model.loadPictures()
+        model.loadPictures(applicationContext)
 
         binding.floatingActionButton.setOnClickListener {
 
@@ -79,30 +77,15 @@ class PictureListActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val contentResolver = applicationContext.contentResolver
 
         if (requestCode == lauchTakePicture) {
             if (resultCode == RESULT_OK) {
                 val result = data?.getStringExtra("result")
                 Log.i(TAG, "onActivityResult: $result")
 
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    val file = File(result)
-                    val api = sendToApi(file)
-
-                        var picture = Pictures("test", result!!)
-                        bdd.picturesDao().insert(picture)
-
-                        for (item in api!!.objects) {
-                            Log.i(TAG, "onActivityResult: Adding object: ${item.name}")
-                            bdd.objectDao().insert(Objects(item.name,
-                                item.confidence,
-                                bdd.picturesDao().getLastId()))
-                        }
+                model.insert(result!!, applicationContext)
 
 
-                }
 
             }
 
@@ -113,17 +96,7 @@ class PictureListActivity : AppCompatActivity() {
         }
     }
 
-    suspend fun sendToApi(file: File): ObjectRoot? {
-        val fbody = RequestBody.create("image/*".toMediaTypeOrNull(),
-            file);
 
-        val api = CognitiveServiceBuilder.buildService(CognitiveEndpoint::class.java)
-
-        var response = api.SendImage(fbody).execute();
-        var callback = response.body();
-
-        return callback
-    }
 
     private fun updateUi(state: PictureListViewModelState) {
         when (state) {
