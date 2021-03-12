@@ -51,7 +51,6 @@ class TakePicturesActivity : AppCompatActivity() {
                 val cameraInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 startActivityForResult(cameraInt, cameraRequestId)
             }else {
-                Log.i(TAG, "onCreate: simulaaaaaaaaate")
                 var resId = R.drawable.simulate
                 var resources = resources
                 // On sait que ca crash ici mais i don't know why :(
