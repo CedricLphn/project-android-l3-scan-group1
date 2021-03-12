@@ -55,7 +55,6 @@ class PictureListViewModel : ViewModel() {
             bdd.picturesDao().insert(picture)
 
             for (item in api.objects) {
-                Log.i(TAG, "onActivityResult: Adding object: ${item.name}")
                 bdd.objectDao().insert(Objects(item.name,
                     item.confidence,
                     bdd.picturesDao().getLastId()))

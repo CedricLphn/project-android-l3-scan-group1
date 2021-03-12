@@ -39,7 +39,6 @@ class PictureAdapter(private var pictures: MutableList<Pictures>) :
     fun removeAt(position: Int): Pictures {
         val picture = pictures[position]
         pictures.removeAt(position)
-        Log.i("Picture adapter", "removeAt: suppression ${position}")
         notifyItemRemoved(position)
 
         return picture
