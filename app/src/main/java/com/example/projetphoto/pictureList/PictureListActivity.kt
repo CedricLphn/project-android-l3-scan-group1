@@ -7,13 +7,16 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
+import android.widget.SimpleAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.projetphoto.R
 import com.example.projetphoto.azure.CognitiveEndpoint
@@ -23,6 +26,7 @@ import com.example.projetphoto.db.AppDatabase
 import com.example.projetphoto.db.db_init
 import com.example.projetphoto.db.objects.Objects
 import com.example.projetphoto.db.pictures.Pictures
+import com.example.projetphoto.gesture.SwipeToDeleteCallback
 import com.example.projetphoto.takepictures.TakePicturesActivity
 import com.example.projetphoto.utils.ObjectRoot
 import kotlinx.coroutines.CoroutineScope
@@ -60,7 +64,17 @@ class PictureListActivity : AppCompatActivity() {
 
         model.getState().observe(this, Observer { state -> updateUi(state!!) })
 
-        adapter = PictureAdapter(listOf())
+        adapter = PictureAdapter(arrayListOf())
+        val swipeHandler = object : SwipeToDeleteCallback(this) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = binding.recyclerView.adapter as PictureAdapter
+                val pictureRemove = adapter.removeAt(viewHolder.adapterPosition)
+                bdd.picturesDao().delete(pictureRemove)
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
