@@ -1,16 +1,21 @@
 package com.example.projetphoto.pictureList
 
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.example.projetphoto.R
 import com.example.projetphoto.azure.CognitiveEndpoint
 import com.example.projetphoto.azure.CognitiveServiceBuilder
 import com.example.projetphoto.databinding.ActivityPictureListBinding
