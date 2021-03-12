@@ -115,7 +115,7 @@ class PictureListViewModel : ViewModel() {
             val file = File(fileName)
             val api = sendToApi(file)
 
-            var picture = Pictures("test", fileName!!)
+            var picture = Pictures("test", fileName!!, api!!.objects!!.size)
             bdd.picturesDao().insert(picture)
 
             for (item in api!!.objects) {

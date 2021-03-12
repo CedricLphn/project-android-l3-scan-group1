@@ -2,6 +2,7 @@ package com.example.projetphoto.pictureList
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
@@ -32,7 +33,7 @@ class PictureAdapter(private var pictures: List<Pictures>) :
             titleTextView.text = picture.title
             dateTextView.text = "picture.pictureDate"
             pictureImageView.setImageURI(Uri.parse(picture.link))
-            nbObjectTextView.text = "picture.nbObject.toString()"
+            nbObjectTextView.text = picture.count.toString()
         }
     }
 
