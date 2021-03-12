@@ -1,20 +1,21 @@
 package com.example.projetphoto.takepictures
 
 import android.Manifest
+import android.R.attr.button
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
-import android.widget.EditText
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.projetphoto.R
 import com.example.projetphoto.databinding.ActivityTakepicturesBinding
 import java.io.File
 import java.io.FileOutputStream
@@ -28,6 +29,7 @@ private val PERMISSION_CODE = 1000;
 
 class TakePicturesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTakepicturesBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTakepicturesBinding.inflate(layoutInflater)
@@ -41,20 +43,41 @@ class TakePicturesActivity : AppCompatActivity() {
                 cameraRequestId
             )
         binding.cameraBtn.setOnClickListener {
-            textDialog()
+            //textDialog()
 
-           // val cameraInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-           // startActivityForResult(cameraInt, cameraRequestId)
+            val cameraInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(cameraInt, cameraRequestId)
         }
+
+        binding.changeEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+                binding.cameraBtn.isEnabled = s.isNotBlank()
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+        })
+
     }
-    private fun textDialog() {
-            val builder = AlertDialog.Builder(this)
+    /*private fun textDialog() {
+        lateinit var editText: String
+        lateinit var string: String
+
+        val builder = AlertDialog.Builder(this)
             val inflater = layoutInflater
            // val dialogLayout = inflater.inflate(binding.cameraBtn, null)
            // val editText = dialogLayout.findViewById<EditText>(editText)
+        //string = editText.text.toString()
+       // textView.text = string
 
             with(builder) {
-                setTitle("Enter title plz")
+                setTitle("Enter title please")
+                editText = binding.changeEditText.text.toString()
                 setPositiveButton("OK"){dialog, which ->
                     val cameraInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     startActivityForResult(cameraInt, cameraRequestId)
@@ -69,7 +92,7 @@ class TakePicturesActivity : AppCompatActivity() {
                 show()
             }
 
-    }
+    }*/
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -86,11 +109,14 @@ class TakePicturesActivity : AppCompatActivity() {
                 //Manifest.permission.WRITE_EXTERNAL_STORAGE + Manifest.permission.READ_EXTERNAL_STORAGE
             } else {
                 val sdf = SimpleDateFormat("dd/M/yyyy_hh:mm:ss")
+                val date = SimpleDateFormat("dd/M/yyyy")
                 val currentDate = sdf.format(Date())
                 val name = saveImage(image, "$currentDate")
                 //val name = saveImage(image, "test2")
                 val returnIntent = Intent(this, TakePicturesActivity::class.java)
                 returnIntent.putExtra("result", name)
+                returnIntent.putExtra("title", binding.changeEditText.text.toString())
+                returnIntent.putExtra("date", date)
                 setResult(RESULT_OK, returnIntent)
                 finish()
 
@@ -107,7 +133,7 @@ class TakePicturesActivity : AppCompatActivity() {
 
         val fullpath = "${getExternalFilesDir(image_name)}/${fname}"
 
-        if (file.exists()) file.delete()
+
         try {
             val out = FileOutputStream(file)
             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
