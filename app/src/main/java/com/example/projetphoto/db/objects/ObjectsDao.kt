@@ -6,7 +6,7 @@ import androidx.room.Query
 
 @Dao
 interface ObjectsDao {
-    @Query("SELECT * FROM Objects")
+    @Query("SELECT * FROM Objects ORDER BY id DESC")
     fun getAll() : List<Objects>
 
     @Query("SELECT * FROM Objects WHERE photo_id = :photo_id")
