@@ -75,7 +75,7 @@ class PictureListActivity : AppCompatActivity() {
                 val rootFile = data?.getStringExtra("rootFile")
                 val title = data?.getStringExtra("title")
                 val date = data?.getStringExtra("date")
-                model.insert(rootFile!!, title!!, date!!, applicationContext)
+                model.insert(rootFile!!, title!!, date!!, bdd)
             }
 
             //Log.i(TAG, "onActivityResult: $filedata")

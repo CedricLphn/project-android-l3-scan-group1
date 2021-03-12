@@ -3,6 +3,7 @@ package com.example.projetphoto
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.projetphoto.db.AppDatabase
 import com.example.projetphoto.db.pictures.Pictures
+import com.example.projetphoto.db.pictures.PicturesDao
 import com.example.projetphoto.pictureList.PictureListViewModel
 import com.example.projetphoto.pictureList.PictureListViewModelState
 import com.nhaarman.mockitokotlin2.doReturn
@@ -21,18 +22,21 @@ class PictureListViewModelTest {
     @Test
     fun `load picture yields state Failure`() {
 
-//         val db: AppDatabase = mock()
-//        whenever(db.picturesDao().getAll())
-//            .thenReturn(mutableListOf<Pictures>())
-        //Throw NullException
-        val mock = mock<AppDatabase> {
-            on { picturesDao().getAll() } doReturn mutableListOf<Pictures>()
-        }
+        val picturesDao : PicturesDao = mock()
+        whenever(picturesDao.getAll())
+            .thenReturn(mutableListOf<Pictures>())
+         val db: AppDatabase = mock()
+        whenever(db.picturesDao())
+            .thenReturn(picturesDao)
+//        //Throw NullException
+//        val mock = mock<AppDatabase> {
+//            on { picturesDao().getAll() } doReturn mutableListOf<Pictures>()
+//        }
 
         val model = PictureListViewModel()
         val observer = model.getState().testObserver()
 
-        model.loadPictures(mock)
+        model.loadPictures(db)
         Assert.assertEquals(
             listOf(
                 PictureListViewModelState.Loading,
@@ -45,14 +49,18 @@ class PictureListViewModelTest {
     @Test
     fun `load picture yields state Success`() {
         val pictures = mutableListOf<Pictures>(Pictures("test", "12/03/2021 13:37:50", "null", 1))
-        val db: AppDatabase = mock()
-        whenever(db.picturesDao().getAll())
+
+        val picturesDao : PicturesDao = mock()
+        whenever(picturesDao.getAll())
             .thenReturn(pictures)
+        val db: AppDatabase = mock()
+        whenever(db.picturesDao())
+            .thenReturn(picturesDao)
 
         val model = PictureListViewModel()
         val observer = model.getState().testObserver()
-        //Error context
-//        model.insert("null", "test", "12/03/2021 13:37:50", applicationContext)
+
+        model.insert("null", "test", "12/03/2021 13:37:50", db)
         model.loadPictures(db)
         Assert.assertEquals(
             listOf(
